@@ -409,9 +409,128 @@
     margin-top: 20px; padding-top: 15px;
     border-top: 1px solid rgba(255, 43, 214, 0.15);
   }
+
+  /* ===== CURSOR VIRTUAL (segue o dedo) ===== */
+  .virtual-cursor {
+    position: fixed;
+    width: 36px; height: 36px;
+    pointer-events: none;
+    z-index: 99999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.05s linear, background 0.15s, box-shadow 0.15s;
+    display: none;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 43, 214, 0.9) 0%, rgba(139, 31, 255, 0.6) 60%, transparent 100%);
+    box-shadow:
+      0 0 20px var(--neon-pink),
+      0 0 40px var(--neon-purple),
+      inset 0 0 10px rgba(255, 255, 255, 0.5);
+  }
+  .virtual-cursor.active {
+    background: radial-gradient(circle, rgba(255, 255, 255, 1) 0%, rgba(255, 43, 214, 0.8) 50%, transparent 100%);
+    box-shadow: 0 0 30px var(--neon-pink), 0 0 60px var(--neon-pink);
+    transform: translate(-50%, -50%) scale(1.5);
+  }
+  .virtual-cursor::after {
+    content: '';
+    position: absolute;
+    inset: -8px;
+    border-radius: 50%;
+    border: 2px solid var(--neon-pink);
+    opacity: 0.5;
+    animation: cursorPulse 1.5s ease-in-out infinite;
+  }
+  @keyframes cursorPulse {
+    0%, 100% { transform: scale(1); opacity: 0.5; }
+    50% { transform: scale(1.3); opacity: 0; }
+  }
+
+  /* Highlight do elemento sob o cursor */
+  .gesture-hover {
+    outline: 2px solid var(--neon-pink) !important;
+    outline-offset: 3px !important;
+    box-shadow: 0 0 30px rgba(255, 43, 214, 0.6) !important;
+    transition: all 0.1s !important;
+  }
+
+  /* ===== DOWNLOAD CTA ===== */
+  .download-cta {
+    margin-top: 30px;
+    padding: 40px 30px;
+    background:
+      linear-gradient(135deg, rgba(255, 43, 214, 0.15), rgba(31, 192, 255, 0.15)),
+      rgba(5, 0, 21, 0.7);
+    border: 2px solid var(--neon-pink);
+    border-radius: 16px;
+    text-align: center;
+    box-shadow: 0 0 50px rgba(255, 43, 214, 0.3);
+    position: relative; overflow: hidden;
+  }
+  .download-cta::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255, 43, 214, 0.2), transparent);
+    animation: scan 3s linear infinite;
+  }
+  .download-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 28px; font-weight: 900;
+    letter-spacing: 6px;
+    background: linear-gradient(90deg, #fff, var(--neon-pink), #fff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-size: 200% auto;
+    animation: shimmer 3s linear infinite;
+    margin-bottom: 12px;
+    position: relative; z-index: 1;
+  }
+  .download-sub {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 16px;
+    color: var(--text);
+    margin-bottom: 24px;
+    letter-spacing: 2px;
+    position: relative; z-index: 1;
+  }
+  .download-sub strong { color: var(--neon-cyan); }
+  .download-buttons {
+    display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;
+    position: relative; z-index: 1;
+  }
+  .download-btn {
+    display: inline-flex; align-items: center; gap: 12px;
+    padding: 18px 32px;
+    background: linear-gradient(90deg, var(--neon-pink), var(--neon-purple));
+    border: none; border-radius: 12px;
+    color: white; text-decoration: none;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 14px; font-weight: 900;
+    letter-spacing: 3px;
+    cursor: pointer; transition: all 0.3s;
+    box-shadow: 0 0 25px rgba(255, 43, 214, 0.6);
+  }
+  .download-btn:hover {
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: 0 5px 40px rgba(255, 43, 214, 0.9);
+  }
+  .download-btn.secondary {
+    background: rgba(5, 0, 21, 0.8);
+    border: 2px solid var(--neon-cyan);
+    color: var(--neon-cyan);
+    box-shadow: 0 0 20px rgba(0, 255, 245, 0.3);
+  }
+  .download-btn.secondary:hover {
+    background: rgba(0, 255, 245, 0.15);
+    box-shadow: 0 5px 40px rgba(0, 255, 245, 0.6);
+  }
+  .download-btn svg { width: 22px; height: 22px; }
 </style>
 </head>
 <body>
+
+<!-- CURSOR VIRTUAL (segue o dedo) -->
+<div class="virtual-cursor" id="virtual-cursor"></div>
 
 <!-- SPLASH -->
 <div class="splash">
@@ -565,6 +684,24 @@
     </div>
   </div>
 
+  <!-- ===== DOWNLOAD CTA ===== -->
+  <div class="download-cta">
+    <div class="download-title">QUER CONTROLAR SEU PC?</div>
+    <div class="download-sub">
+      Esta versão web é uma <strong>DEMO</strong>. Para controlar o cursor do seu Windows de verdade, baixe a versão <strong>desktop</strong>.
+    </div>
+    <div class="download-buttons">
+      <a href="https://github.com/matheusschelle/kairos-control/archive/refs/heads/main.zip" class="download-btn" download>
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 16l-5-5h3V4h4v7h3l-5 5zM5 18h14v2H5z"/></svg>
+        BAIXAR DESKTOP
+      </a>
+      <a href="https://github.com/matheusschelle/kairos-control" class="download-btn secondary" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1-.7.1-.7.1-.7 1.2 0 1.9 1.2 1.9 1.2 1 1.8 2.8 1.3 3.5 1 0-.8.4-1.3.7-1.6-2.7-.3-5.5-1.3-5.5-6 0-1.2.5-2.3 1.3-3.1-.2-.4-.6-1.6 0-3.2 0 0 1-.3 3.4 1.2a11.5 11.5 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.7 1.6.2 2.8.1 3.2.7.8 1.3 1.9 1.3 3.1 0 4.6-2.8 5.6-5.5 5.9.5.4.9 1.1.9 2.3v3.3c0 .3.1.7.8.6A12 12 0 0 0 12 .3"/></svg>
+        VER NO GITHUB
+      </a>
+    </div>
+  </div>
+
   <div class="footer-brand">
     <svg class="footer-logo" viewBox="0 0 100 100" fill="none">
       <defs>
@@ -594,10 +731,85 @@
   const handBadge = document.getElementById('hand-badge');
   const connStatus = document.getElementById('conn-status');
   const startBtn = document.getElementById('start-btn');
+  const vCursor = document.getElementById('virtual-cursor');
 
   let lastTime = performance.now();
   let frameCount = 0;
   let fps = 0;
+
+  // ===== CURSOR VIRTUAL =====
+  let smoothX = window.innerWidth / 2;
+  let smoothY = window.innerHeight / 2;
+  let lastClickTime = 0;
+  let lastScrollTime = 0;
+  let lastHovered = null;
+
+  function updateVirtualCursor(normX, normY, gesture) {
+    // Mapeia coordenadas normalizadas (0-1) para tela inteira
+    // Aplica margem pra usar a regiao central da camera
+    const padX = 0.15, padY = 0.15;
+    const sx = ((normX - padX) / (1 - 2 * padX)) * window.innerWidth;
+    const sy = ((normY - padY) / (1 - 2 * padY)) * window.innerHeight;
+
+    // Suavização (low-pass filter)
+    smoothX += (sx - smoothX) * 0.35;
+    smoothY += (sy - smoothY) * 0.35;
+
+    const cx = Math.max(0, Math.min(window.innerWidth, smoothX));
+    const cy = Math.max(0, Math.min(window.innerHeight, smoothY));
+
+    vCursor.style.display = 'block';
+    vCursor.style.left = cx + 'px';
+    vCursor.style.top = cy + 'px';
+
+    // Detecta elemento sob o cursor (sem o proprio cursor + canvas)
+    vCursor.style.pointerEvents = 'none';
+    const el = document.elementFromPoint(cx, cy);
+
+    // Highlight
+    if (lastHovered && lastHovered !== el) {
+      lastHovered.classList.remove('gesture-hover');
+    }
+    if (el && el !== document.body && el !== document.documentElement) {
+      // Acha o elemento interativo mais proximo
+      const clickable = el.closest('a, button, .gesture-item, .panel, .control-btn, .download-btn');
+      if (clickable) {
+        clickable.classList.add('gesture-hover');
+        lastHovered = clickable;
+      }
+    }
+
+    const now = performance.now();
+
+    // CLICK
+    if (gesture === 'CLICK') {
+      vCursor.classList.add('active');
+      if (now - lastClickTime > 700) {
+        lastClickTime = now;
+        if (lastHovered) {
+          if (lastHovered.tagName === 'A' || lastHovered.tagName === 'BUTTON') {
+            lastHovered.click();
+          } else {
+            lastHovered.click();
+          }
+          // Flash visual
+          lastHovered.style.transform = 'scale(0.96)';
+          setTimeout(() => { if (lastHovered) lastHovered.style.transform = ''; }, 150);
+        }
+      }
+    } else {
+      vCursor.classList.remove('active');
+    }
+
+    // SCROLL
+    if (gesture === 'SCROLL_UP' && now - lastScrollTime > 50) {
+      window.scrollBy({ top: -40, behavior: 'auto' });
+      lastScrollTime = now;
+    } else if (gesture === 'SCROLL_DOWN' && now - lastScrollTime > 50) {
+      window.scrollBy({ top: 40, behavior: 'auto' });
+      lastScrollTime = now;
+    }
+  }
 
   function getFingerStates(landmarks) {
     const tips = [4, 8, 12, 16, 20];
@@ -671,6 +883,17 @@
 
       const fingers = getFingerStates(landmarks);
       gesture = detectGesture(fingers);
+
+      // === ATIVA O CURSOR VIRTUAL ===
+      // landmark 8 = ponta do indicador. Como selfieMode=true, X ja vem espelhado.
+      updateVirtualCursor(landmarks[8].x, landmarks[8].y, gesture);
+    } else {
+      // Sem mao detectada - esconde cursor
+      vCursor.style.display = 'none';
+      if (lastHovered) {
+        lastHovered.classList.remove('gesture-hover');
+        lastHovered = null;
+      }
     }
 
     // Watermark KAIROS no centro
