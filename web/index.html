@@ -525,6 +525,81 @@
     box-shadow: 0 5px 40px rgba(0, 255, 245, 0.6);
   }
   .download-btn svg { width: 22px; height: 22px; }
+
+  /* ===== NAVBAR KAIROS (links da marca) ===== */
+  .kairos-nav {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-bottom: 25px;
+  }
+  @media (max-width: 700px) {
+    .kairos-nav { grid-template-columns: 1fr; }
+  }
+  .nav-card {
+    display: flex; align-items: center; gap: 14px;
+    padding: 18px 22px;
+    background:
+      linear-gradient(135deg, rgba(139, 31, 255, 0.15), rgba(255, 43, 214, 0.1)),
+      rgba(5, 0, 21, 0.7);
+    border: 2px solid rgba(255, 43, 214, 0.4);
+    border-radius: 12px;
+    text-decoration: none;
+    color: var(--text);
+    transition: all 0.25s ease;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 20px rgba(139, 31, 255, 0.15);
+    position: relative;
+    overflow: hidden;
+  }
+  .nav-card::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255, 43, 214, 0.25), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.6s ease;
+  }
+  .nav-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--neon-pink);
+    box-shadow: 0 8px 35px rgba(255, 43, 214, 0.45);
+  }
+  .nav-card:hover::before { transform: translateX(100%); }
+
+  .nav-icon {
+    width: 46px; height: 46px;
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 10px;
+    background: linear-gradient(135deg, var(--neon-pink), var(--neon-purple));
+    box-shadow: 0 0 18px rgba(255, 43, 214, 0.6);
+    position: relative; z-index: 1;
+  }
+  .nav-icon svg { width: 26px; height: 26px; fill: white; }
+
+  .nav-content { flex: 1; position: relative; z-index: 1; }
+  .nav-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 13px; font-weight: 900;
+    letter-spacing: 2px;
+    color: white;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+    text-shadow: 0 0 10px rgba(255, 43, 214, 0.5);
+  }
+  .nav-desc {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 12px;
+    color: var(--neon-cyan);
+    letter-spacing: 1px;
+  }
+  .nav-arrow {
+    color: var(--neon-pink);
+    font-size: 20px;
+    position: relative; z-index: 1;
+    transition: transform 0.2s;
+  }
+  .nav-card:hover .nav-arrow { transform: translateX(4px); }
 </style>
 </head>
 <body>
@@ -595,6 +670,42 @@
       <span id="conn-status">READY</span>
     </div>
   </header>
+
+  <!-- ===== NAVBAR KAIROS DIGITAL ===== -->
+  <nav class="kairos-nav">
+    <a href="https://kairos-digital-pi.vercel.app/" target="_blank" rel="noopener" class="nav-card">
+      <div class="nav-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 2L2 7v10l10 5 10-5V7L12 2zm0 2.2l7.5 3.8L12 11.7 4.5 8 12 4.2zM4 9.6l7 3.5v7.4l-7-3.5V9.6zm9 10.9v-7.4l7-3.5v7.4l-7 3.5z"/></svg>
+      </div>
+      <div class="nav-content">
+        <div class="nav-title">SITE OFICIAL</div>
+        <div class="nav-desc">kairos-digital.com</div>
+      </div>
+      <div class="nav-arrow">→</div>
+    </a>
+
+    <a href="https://kairos-omega-lilac.vercel.app/" target="_blank" rel="noopener" class="nav-card">
+      <div class="nav-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 4a2 2 0 1 1-2 2 2 2 0 0 1 2-2zm0 12.5a6 6 0 0 1-5-2.7c0-1.7 3.3-2.6 5-2.6s5 .9 5 2.6a6 6 0 0 1-5 2.7zM18 9l-1.4-1.4L15 9.2l1.4 1.4zm-3 4l4-4-2-2-4 4z"/></svg>
+      </div>
+      <div class="nav-content">
+        <div class="nav-title">CRIE SEU AGENTE</div>
+        <div class="nav-desc">Agente autônomo IA</div>
+      </div>
+      <div class="nav-arrow">→</div>
+    </a>
+
+    <a href="https://www.instagram.com/_kairosdigital_/" target="_blank" rel="noopener" class="nav-card">
+      <div class="nav-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23C21.83 8.4 21.85 8.78 21.85 12s0 3.6-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.6 0-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.8 3.8 0 0 1-1.38-.9 3.8 3.8 0 0 1-.9-1.38c-.16-.42-.36-1.06-.41-2.23C2.17 15.6 2.15 15.22 2.15 12s0-3.6.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.4 2.17 8.78 2.15 12 2.15M12 0C8.74 0 8.33 0 7.05.07 5.78.13 4.9.33 4.14.63a5.86 5.86 0 0 0-2.13 1.38A5.86 5.86 0 0 0 .63 4.14C.33 4.9.13 5.78.07 7.05.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.06 1.27.26 2.15.56 2.91.32.8.74 1.48 1.38 2.13a5.86 5.86 0 0 0 2.13 1.38c.76.3 1.64.5 2.91.56C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c1.27-.06 2.15-.26 2.91-.56.8-.32 1.48-.74 2.13-1.38a5.86 5.86 0 0 0 1.38-2.13c.3-.76.5-1.64.56-2.91.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.06-1.27-.26-2.15-.56-2.91a5.86 5.86 0 0 0-1.38-2.13A5.86 5.86 0 0 0 19.86.63C19.1.33 18.22.13 16.95.07 15.67.01 15.26 0 12 0zm0 5.84a6.16 6.16 0 1 0 6.16 6.16A6.16 6.16 0 0 0 12 5.84zm0 10.16a4 4 0 1 1 4-4 4 4 0 0 1-4 4zm6.4-11.85a1.44 1.44 0 1 0 1.44 1.44 1.44 1.44 0 0 0-1.44-1.44z"/></svg>
+      </div>
+      <div class="nav-content">
+        <div class="nav-title">INSTAGRAM</div>
+        <div class="nav-desc">@_kairosdigital_</div>
+      </div>
+      <div class="nav-arrow">→</div>
+    </a>
+  </nav>
 
   <div class="grid">
     <div>
