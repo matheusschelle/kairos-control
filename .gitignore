@@ -1,0 +1,26 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.log
+debug.log
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.env
+.env
+venv/
+env/
+
+# node (não precisamos)
+node_modules/
+package-lock.json
+
+# pastas legacy
+dashboard/
+scripts/
+src/
+setup.js
+package.json
